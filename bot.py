@@ -3,6 +3,8 @@ import requests
 import time
 from random import randrange
 
+from datetime import datetime
+
 def getPostInfo(type):
     # returns url of random top subreddit post
     # type can be hour, day, week, month, year, all (bot will only use month, year, or all)
@@ -68,8 +70,8 @@ def main():
         
         # tweet content
         api.update_status(tweetContent)
-        print('Tweeted Content')
-        time.sleep(21600)
+        print('Tweeted Content - ' + str(datetime.now()))
+        time.sleep(14400)
 
 if __name__ == '__main__':
     main()
