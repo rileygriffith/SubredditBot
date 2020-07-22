@@ -68,6 +68,7 @@ def main():
         
         # tweet content
         api.update_status(tweetContent)
+        print('Tweeted Content')
         time.sleep(21600)
 
 if __name__ == '__main__':
