@@ -35,40 +35,40 @@ def generatePostType():
     return postType
 
 def main():
+    while(True):
+        # twitter api authentication
+        consumer_key = '4suGwwWVXKC3qz139Cshn1psU'
+        consumer_secret = 'bcosF1KtLOHvH0pSqLmIYMxyfMVS86mLXxjGwwN6birZ5PB6z1'
 
-    # twitter api authentication
-    consumer_key = '4suGwwWVXKC3qz139Cshn1psU'
-    consumer_secret = 'bcosF1KtLOHvH0pSqLmIYMxyfMVS86mLXxjGwwN6birZ5PB6z1'
+        key = '1284242327863570432-orrXVE1tvLzOrSEwVK8kWnM4mv2X3W'
+        secret = 'UXonjwA0ZBgbkZjQ2TsDbc3CRL1tR1s6IgwkdnKDLA791'
 
-    key = '1284242327863570432-orrXVE1tvLzOrSEwVK8kWnM4mv2X3W'
-    secret = 'UXonjwA0ZBgbkZjQ2TsDbc3CRL1tR1s6IgwkdnKDLA791'
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(key, secret)
 
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(key, secret)
+        # creates the api object
+        api = tweepy.API(auth, wait_on_rate_limit=True)
 
-    # creates the api object
-    api = tweepy.API(auth, wait_on_rate_limit=True)
+        # generates post type
+        postType = generatePostType()
 
-    # generates post type
-    postType = generatePostType()
+        # calls getURL method to generate top post link
+        postInfo = getPostInfo(postType)
+        
 
-    # calls getURL method to generate top post link
-    postInfo = getPostInfo(postType)
-    
+        # create the content for the tweet. Wording is different depending on the type of post
+        if postInfo[3] == 'all':
+            tweetContent = 'Top post of all time in /r/' + postInfo[1] + ':\n\n'
+        else:
+            tweetContent = 'Top post of the ' + postInfo[3] + ' in /r/' + postInfo[1] + ':\n\n'
 
-    # create the content for the tweet. Wording is different depending on the type of post
-    if postInfo[3] == 'all':
-        tweetContent = 'Top post of all time in /r/' + postInfo[1] + ':\n\n'
-    else:
-        tweetContent = 'Top post of the ' + postInfo[3] + ' in /r/' + postInfo[1] + ':\n\n'
-
-    # append the rest of the tweetcontent 
-    redditContent = postInfo[2]
-    tweetContent = tweetContent + redditContent[:100] + '...\n\n' + postInfo[0]
-    
-    # tweet content
-    api.update_status(tweetContent)
-    time.sleep(21600)
+        # append the rest of the tweetcontent 
+        redditContent = postInfo[2]
+        tweetContent = tweetContent + redditContent[:100] + '...\n\n' + postInfo[0]
+        
+        # tweet content
+        api.update_status(tweetContent)
+        time.sleep(21600)
 
 if __name__ == '__main__':
     main()
